@@ -26,6 +26,7 @@ if isempty(dsFile)
     fprintf('%s finds no suitable downsampled file\n',mfilename)
     return
 end
+dsFile = dsFile(3:end);
 
 %Get the voxel size from the file name
 if iscell(dsFile)

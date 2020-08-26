@@ -52,8 +52,9 @@ end
 
 % Find all downsampled MHD to TIFF files
 
-Dmhd=dir(fullfile(downsampleDir,'ds*_*_*.mhd'));
-Dtiff=dir(fullfile(downsampleDir,'ds*_*_*.tif*'));
+%Dmhd=dir(fullfile(downsampleDir,'*.mhd'));
+Dmhd=dir(downsampleDir);
+Dtiff=dir(fullfile(downsampleDir,'*.tif*'));
 
 if length(Dmhd)==0 && length(Dtiff)==0
     fprintf('%s - No appropriate MHD or TIFF files in %s\n', mfilename, downsampleDir)

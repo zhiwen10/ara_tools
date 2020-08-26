@@ -20,7 +20,7 @@
 (ErodeMask "false" )
 
 (NumberOfResolutions 4)
-(FinalGridSpacingInVoxels 10.000000 10.000000 10.000000)
+(FinalGridSpacingInVoxels 50.000000 50.000000 50.000000)
 
 (HowToCombineTransforms "Compose")
 

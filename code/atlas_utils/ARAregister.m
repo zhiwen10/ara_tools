@@ -106,7 +106,7 @@ params.addParamValue('elastixParams',elastix_params_default,@iscell)
 
 
 params.parse(varargin{:});
-downsampleDir = params.Results.downsampleDir;
+downsampleDir = params.Results.downsampleDir;toolboxPath
 ara2sample = params.Results.ara2sample;
 sample2ara = params.Results.sample2ara;
 channel = params.Results.channel;
@@ -187,12 +187,12 @@ end
 
 % We will now load the parameters into a cell array of structures and then modify it
 % so that the correct pixel size is used. 
-for ii=1:length(elastixParams)
-    elastixParams{ii}=elastix_parameter_read(elastixParams{ii});
-    if isfield(elastixParams{ii},'FinalGridSpacingInVoxels')
-        elastixParams{ii}.FinalGridSpacingInVoxels(:) = S.ARAsize;
-    end
-end
+% for ii=1:length(elastixParams)
+%     elastixParams{ii}=elastix_parameter_read(elastixParams{ii});
+%     if isfield(elastixParams{ii},'FinalGridSpacingInVoxels')
+%         elastixParams{ii}.FinalGridSpacingInVoxels(:) = S.ARAsize;
+%     end
+% end
 
 %Figure out which atlas to use
 dsFile = aratools.getDownSampledFile;
@@ -289,8 +289,8 @@ logRegInfoToFile(logFname,sprintf('Voxel size: %d microns\n', S.ARAsize))
 logRegInfoToFile(logFname,sprintf('Sample volume file: %s\n', sampleFile))
 logRegInfoToFile(logFname,sprintf('Template file: %s\n', templateFile))
 
-elastix_version=elastix('version');
-logRegInfoToFile(logFname,sprintf('Registration software: %s\n', elastix_version))
+% elastix_version=elastix('version');
+% logRegInfoToFile(logFname,sprintf('Registration software: %s\n', elastix_version))
 if ~medFiltSample
     logRegInfoToFile(logFname,sprintf('Filtering of sample volume: none\n'))
 else
@@ -310,7 +310,7 @@ if ara2sample
 
         writeLoggingLine(logFname,sprintf('Beginning registration of ARA to sample\n'))
         writeLoggingLine(logFname,sprintf('Conducting registration in %s\n',elastixDir{end}))
-        [~,params]  = elastix(templateVol,sampleVol,elastixDir{end},-1,'paramstruct',elastixParams);
+        [~,params]  = elastix(templateVol,sampleVol,elastixDir{end},elastixParams);
         writeLoggingLine(logFname,sprintf('Finished registration of ARA to sample\n'))
 
         if ~iscell(params.TransformParameters)
@@ -344,7 +344,8 @@ if sample2ara
     else
         writeLoggingLine(logFname,sprintf('Beginning registration of sample to ARA\n'))
         writeLoggingLine(logFname,sprintf('Conducting registration in %s\n',elastixDir{end}))
-        [~,params]=elastix(sampleVol,templateVol,elastixDir{end},-1,'paramstruct',elastixParams); 
+        [~,params]=elastix(sampleVol,templateVol,elastixDir{end},elastixParams); 
+        %[~,params]=elastix(sampleVol,templateVol,elastixDir{end},elastixParams); 
         writeLoggingLine(logFname,sprintf('Finished registration of sample to ARA\n'))
 
         if ~iscell(params.TransformParameters)
@@ -435,7 +436,7 @@ function writeLoggingLine(fname,messageToLog)
     fid = fopen(fname,'a+');
     msg = sprintf('%s - INFO - %s - %s\n', ...
         datestr(now,'yyyy-mm-dd_HH-MM-SS'), ...
-        mfilename, chomp(messageToLog));
+        mfilename, (messageToLog));
     fprintf(fid,msg);
     fclose(fid);
 
